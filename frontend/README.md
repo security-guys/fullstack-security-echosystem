@@ -381,13 +381,17 @@ const PostItem: React.FC<{ title: string; content: string }> = ({ title, content
 };
 
 // 2. Callback Props Example (Child → Parent)
-const PostForm: React.FC = () => {
+type PostFormProps = {
+  onSubmit: (postData: { title: string; content: string }) => void;
+};
+
+const PostForm: React.FC<PostFormProps> = ({ onSubmit }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ title, content });  {/* Passing data to parent */}
+    onSubmit({ title, content });
   };
 
   return (
@@ -407,49 +411,12 @@ const PostForm: React.FC = () => {
 
 const PostPage: React.FC = () => {
   const handlePostSubmit = (postData: { title: string; content: string }) => {
-    // Logic to save post
     console.log(postData);
   };
 
   return (
     <div>
-      <PostForm onSubmit={handlePostSubmit} />  {/* Passing callback function */}
-    </div>
-  );
-};
-```
-
-### Summary:
-
-1. **Props (Parent → Child)**
-   - Passing data from parent component to child component.
-   - One-way data flow.
-   - Child components can only use the received props.
-
-2. **Callback Props (Child → Parent)**
-   - Passing data from child component to parent component.
-   - Child calls the function passed by the parent.
-   - Child component can deliver data to the parent.
-
-Simplified explanation of `useState` and `useEffect`:
-
-### 1. useState
-
-A hook for managing state. It allows you to store and manage data that changes within a component.
-
-```typescript
-// Basic usage
-const [count, setCount] = useState(0);  // Initial value 0
-
-// Usage example
-const Counter: React.FC = () => {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div>
-      <p>Current Count: {count}</p>
-      <button onClick={() => setCount(count + 1)}>Increase</button>
-      <button onClick={() => setCount(count - 1)}>Decrease</button>
+      <PostForm onSubmit={handlePostSubmit} />
     </div>
   );
 };
